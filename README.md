@@ -1,4 +1,5 @@
 # sftpd
+Fork from https://github.com/ggrandes/sftpserver
 
-Fork from https://github.com/haojiesong/sftpserver.git
-
+## winsw: Windows service wrapper
+https://github.com/kohsuke/winsw

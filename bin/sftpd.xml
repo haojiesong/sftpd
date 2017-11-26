@@ -1,0 +1,18 @@
+<configuration>
+    <id>sftpd</id>
+    <name>HMS SFTP Server</name>
+    <description>Service for HMS SFTP Server</description>
+    <executable>java</executable>
+	<argument>-Dprogram.name=sftpd</argument>
+    <argument>-Dsftp.id=default</argument>
+    <argument>-Dsftp.home=D:/sftpd</argument>
+	<argument>-Dsftp.log=CONSOLE</argument>
+	<argument>-showversion</argument>
+	<argument>-XX:+PrintCommandLineFlags</argument>
+	<argument>-XX:-PrintFlagsFinal</argument>
+	<argument>-Xmx64m</argument>
+	<argument>-jar</argument>
+	<argument>-sftpd.jar</argument>
+    <logmode>rotate</logmode>
+	<startmode>Automatic</startmode>
+</configuration>
