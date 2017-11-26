@@ -3,7 +3,9 @@
 Fork from https://github.com/ggrandes/sftpserver
 
 https://mina.apache.org/sshd-project/index.html
+
 https://github.com/apache/mina-sshd
+
 https://github.com/apache/mina-sshd/blob/master/sshd-core/src/main/java/org/apache/sshd/server/SshServer.java
 
 ## winsw: Windows service wrapper
@@ -18,3 +20,6 @@ https://technet.microsoft.com/en-us/library/cc947813(v=ws.10).aspx
 
 ## TCPView
 https://docs.microsoft.com/en-us/sysinternals/downloads/tcpview
+
+## htpasswd
+https://httpd.apache.org/docs/current/programs/htpasswd.html

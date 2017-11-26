@@ -612,7 +612,11 @@ public class Server implements PasswordAuthenticator /*, PublickeyAuthenticator*
 
         public String getHome(final String user) {
             try {
-                final File home = new File(getValue(user, PROP_HOME));
+                String dir = getValue(user, PROP_HOME);
+                if (dir == null || "".equals(dir)) {
+                    dir = getValue(PROP_HOME);
+                }
+                final File home = new File(dir);
                 if (home.isDirectory() && home.canRead()) {
                     return home.getCanonicalPath();
                 }
@@ -782,7 +786,6 @@ public class Server implements PasswordAuthenticator /*, PublickeyAuthenticator*
             bab.free();
             return keyType + " " + DatatypeConverter.printBase64Binary(buf);
         }
-
     }
     */
 }
