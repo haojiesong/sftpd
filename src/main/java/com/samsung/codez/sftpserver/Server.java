@@ -81,7 +81,7 @@ import com.samsung.codez.sftpserver.readonly.ReadOnlyRootedFileSystemProvider;
 
 /**
  * SFTP Server
- *
+ * @author Song Haojie
  */
 public class Server implements PasswordAuthenticator /*, PublickeyAuthenticator*/ {
     public static final String CONFIG_FILE = "/sftpd.properties";
@@ -93,16 +93,16 @@ public class Server implements PasswordAuthenticator /*, PublickeyAuthenticator*
     private Config db;
     private SshServer sshd;
     private volatile boolean running = true;
-    private static String sftpHome;
+    private static String SFTP_HOME;
 
     public static void main(final String[] args) {
-        sftpHome = System.getProperty("sftp.home");
-        if (sftpHome == null || "".equals(sftpHome)) {
+        SFTP_HOME = System.getProperty("sftp.home");
+        if (SFTP_HOME == null || "".equals(SFTP_HOME)) {
             System.err.println("Not specify sftp.home");
             return;
         }
 
-        PropertyConfigurator.configure(sftpHome + "/conf/log4j.properties");
+        PropertyConfigurator.configure(SFTP_HOME + "/conf/log4j.properties");
         new Server().start();
     }
 
@@ -222,7 +222,7 @@ public class Server implements PasswordAuthenticator /*, PublickeyAuthenticator*
             final String htHome = db.getHtValue(Config.PROP_HT_HOME);
             final boolean htEnableWrite = Boolean.parseBoolean(db.getHtValue(Config.PROP_HT_ENABLE_WRITE));
             // is = getClass().getResourceAsStream(HTPASSWD_FILE);
-            File f = new File(sftpHome + "/conf" + HTPASSWD_FILE);
+            File f = new File(SFTP_HOME + "/conf" + HTPASSWD_FILE);
             if (f.exists()) {
                 is = new FileInputStream(f);
             }
@@ -234,11 +234,13 @@ public class Server implements PasswordAuthenticator /*, PublickeyAuthenticator*
             String line = null;
             int c = 0;
             while ((line = r.readLine()) != null) {
-                if (line.startsWith("#"))
+                if (line.startsWith("#")) {
                     continue;
+                }
                 final String[] tok = line.split(":", 2);
-                if (tok.length != 2)
+                if (tok.length != 2) {
                     continue;
+                }
                 final String user = tok[0];
                 final String auth = tok[1];
                 db.setValue(user, Config.PROP_PWD, auth);
@@ -290,7 +292,7 @@ public class Server implements PasswordAuthenticator /*, PublickeyAuthenticator*
                 banner = Paths.get(bannerOption);
             }
         } else {
-            banner = "Welcome to HMS-SSHD\n";
+            banner = "Welcome to HMS-SFTPD\n";
         }
 
         PropertyResolverUtils.updateProperty(sshd, ServerAuthenticationManager.WELCOME_BANNER, banner);
@@ -309,7 +311,7 @@ public class Server implements PasswordAuthenticator /*, PublickeyAuthenticator*
                 LOG.info("Config file loaded " + db.size() + " lines");
             }
             */
-            File f = new File(sftpHome + "/conf" + CONFIG_FILE);
+            File f = new File(SFTP_HOME + "/conf" + CONFIG_FILE);
             if (!f.exists()) {
                 LOG.error("Config file " + CONFIG_FILE + " not found");
             } else {
@@ -408,6 +410,7 @@ public class Server implements PasswordAuthenticator /*, PublickeyAuthenticator*
                 Thread.currentThread().interrupt();
             }
         }
+        LOG.info("Stopped");
     }
 
     public void stop() {
@@ -504,14 +507,16 @@ public class Server implements PasswordAuthenticator /*, PublickeyAuthenticator*
         }
 
         private final String getValue(final String key) {
-            if (key == null)
+            if (key == null) {
                 return null;
+            }
             return db.getProperty(PROP_GLOBAL + "." + key);
         }
 
         private final String getHtValue(final String key) {
-            if (key == null)
+            if (key == null) {
                 return null;
+            }
             return db.getProperty(PROP_HTPASSWD + "." + key);
         }
 
